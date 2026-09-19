@@ -1,25 +1,814 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>Last Dawn: Zombie Siege</title>
-<style>
-:root{--bg:#080d14;--panel:#111b29;--line:#2d4760;--text:#eaf3f4;--muted:#91a5ad;--green:#65e6a0;--red:#ff6d79;--gold:#ffd166;--cyan:#54d7ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#1c3441,#080d14 52%);color:var(--text);font:14px system-ui,Segoe UI,sans-serif}button{border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#1b3142;color:var(--text);cursor:pointer;font-weight:700}button:hover{filter:brightness(1.2)}button:disabled{opacity:.4;cursor:not-allowed}.app{max-width:1200px;margin:auto;padding:14px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.title{font-weight:900;font-size:clamp(24px,4vw,38px);letter-spacing:.05em}.title small{display:block;color:var(--muted);font-size:11px;letter-spacing:0}.wallet{display:flex;gap:7px;flex-wrap:wrap}.wallet span{background:#0c1621;border:1px solid var(--line);padding:8px 10px;border-radius:8px}.layout{display:grid;grid-template-columns:205px 1fr;gap:12px}.side,.card{background:linear-gradient(145deg,#142333,#0d1621);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 35px #0006}.side{padding:12px;height:max-content;position:sticky;top:10px}.profile{padding:4px 2px 13px;margin-bottom:10px;border-bottom:1px solid var(--line)}.avatar{font-size:35px;background:#284657;width:58px;height:58px;display:grid;place-items:center;border-radius:12px;margin-bottom:7px}.nav{display:grid;gap:6px}.nav button{text-align:left;background:transparent;border-color:transparent}.nav button.active{background:#2b5163;border-color:#5c9ab0}.section{display:none}.section.active{display:block}.hero{padding:18px;background:linear-gradient(120deg,#193a45,#28222d);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}.hero h1{margin:5px 0;font-size:clamp(25px,4vw,40px)}.hero p{color:#b5c7c9;max-width:700px}.actions{display:flex;gap:8px;flex-wrap:wrap}.primary{background:linear-gradient(135deg,#3c9e75,#277a86);border:0}.danger{background:#722f3a;border-color:#a74b58}.gold{color:var(--gold)}.stats,.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.stat,.item{background:#0b151e;border:1px solid var(--line);border-radius:10px;padding:12px}.stat{margin-bottom:12px}.stat b{display:block;font-size:24px;color:var(--gold)}.twocol{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.card{padding:14px}.card h2{margin:0 0 10px}.item{position:relative}.item h3{margin:5px 0}.item p{color:var(--muted);margin:6px 0}.item button{width:100%;margin-top:7px}.tag{display:inline-block;padding:2px 7px;border:1px solid var(--line);border-radius:99px;color:var(--muted);font-size:11px}.item>.tag{position:absolute;right:8px;top:8px}.log{height:200px;overflow:auto;background:#071017;border-radius:8px;padding:9px;color:#bed4d7;font:12px monospace}.log div{padding:4px 0;border-bottom:1px solid #ffffff0a}.bar{height:9px;background:#071017;border-radius:9px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,#53d6ff,#5de39c)}.gamebox{position:relative;background:#071018;border:1px solid var(--line);border-radius:10px;overflow:hidden}.gamebox canvas{display:block;width:100%;height:auto;background:linear-gradient(#152c33,#0a151a 70%)}.hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px;background:#0b1621}.controls{display:flex;justify-content:center;gap:10px;padding:10px;background:#0a131d}.controls button{min-width:76px}.shop-price{color:var(--gold);font-weight:700}.modal{display:none;position:fixed;inset:0;background:#000b;place-items:center;z-index:5}.modal.open{display:grid}.modalbox{width:min(430px,92vw);background:#162638;border:1px solid var(--line);border-radius:12px;padding:18px}.modalbox input{width:100%;padding:11px;background:#09121a;border:1px solid var(--line);border-radius:8px;color:white;margin:8px 0 12px}.toast{display:none;position:fixed;right:15px;bottom:15px;background:#245269;border:1px solid #6aa9bd;padding:11px 14px;border-radius:8px;z-index:8}.toast.show{display:block}@media(max-width:760px){.layout{grid-template-columns:1fr}.side{position:static}.nav{grid-template-columns:repeat(4,1fr)}.nav button{text-align:center;font-size:11px;padding:8px 3px}.twocol{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+  <title>Last Dawn: Zombie Siege</title>
+  <style>
+    :root {
+      --bg: #081016;
+      --panel: #101c2b;
+      --panel-2: #152a37;
+      --line: #2c4f5d;
+      --text: #edf5f8;
+      --muted: #a5bdc3;
+      --green: #67e6a5;
+      --gold: #ffd166;
+      --red: #ff6d79;
+      --cyan: #53d7ff;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: radial-gradient(circle at top, #153240, #081016 55%); color: var(--text); font-family: system-ui, sans-serif; }
+    body { padding: 14px; }
+    button, input { font: inherit; }
+    button { cursor: pointer; border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; color: var(--text); background: #1a3040; font-weight: 700; }
+    button:hover { filter: brightness(1.15); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .app { max-width: 1240px; margin: 0 auto; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .brand { font-weight: 900; font-size: clamp(26px, 3vw, 40px); letter-spacing: .08em; }
+    .brand small { display: block; font-size: 11px; letter-spacing: 0; color: var(--muted); }
+    .wallet { display: flex; gap: 7px; flex-wrap: wrap; }
+    .wallet span { background: #0e1a24; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+    .layout { display: grid; grid-template-columns: 205px minmax(0, 1fr); gap: 12px; }
+    .sidebar, .card, .hero { background: linear-gradient(145deg, #152737, #0d1721); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+    .sidebar { padding: 12px; height: fit-content; position: sticky; top: 12px; }
+    .profile { padding: 5px 2px 12px; margin-bottom: 10px; border-bottom: 1px solid var(--line); }
+    .avatar { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 12px; background: #29495e; font-size: 34px; margin-bottom: 8px; }
+    .nav { display: grid; gap: 7px; }
+    .nav button { text-align: left; background: transparent; border: 1px solid transparent; }
+    .nav button.active { background: #2a4d64; border-color: #5d8191; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .hero { padding: 20px; margin-bottom: 12px; background: linear-gradient(120deg, #173b44, #2a2331); }
+    .hero h1 { margin: 6px 0 8px; font-size: clamp(26px, 4vw, 42px); }
+    .hero p { color: #b6c8d2; max-width: 740px; margin: 0; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .primary { background: linear-gradient(135deg, #3d9e79, #2b7d8f); border: 0; }
+    .danger { background: linear-gradient(135deg, #83394b, #b84d57); border: 0; }
+    .gold-btn { background: linear-gradient(135deg, #cfa14b, #f6ca6a); border: 0; color: #20170a; }
+    .tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 11px; }
+    .muted { color: var(--muted); }
+    .stats, .grid, .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+    .stat, .item { background: #0a151d; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+    .stat b { display: block; font-size: 24px; margin-top: 6px; color: var(--gold); }
+    .twocol { display: grid; grid-template-columns: 1.2fr .8fr; gap: 12px; }
+    .card { padding: 14px; }
+    .card h2 { margin: 0 0 10px; }
+    .item { position: relative; }
+    .item .tag { position: absolute; top: 7px; right: 7px; }
+    .item h3 { margin: 18px 0 6px; }
+    .item p { color: var(--muted); margin: 5px 0; }
+    .item button { width: 100%; margin-top: 8px; }
+    .log { height: 210px; overflow: auto; background: #071017; border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: 12px monospace; }
+    .log div { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+    .bar { height: 9px; background: #071017; border-radius: 99px; overflow: hidden; margin: 8px 0; border: 1px solid var(--line); }
+    .bar i { display: block; height: 100%; background: linear-gradient(90deg, #53d7ff, #5fe3a5); }
+    .gameview { background: #081018; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+    .hud { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 8px 10px; background: #0d1b25; }
+    canvas { display: block; width: 100%; height: auto; background: linear-gradient(#122e35, #0a171d 72%); }
+    .controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 10px; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); place-items: center; z-index: 30; }
+    .modal.open { display: grid; }
+    .modalbox { width: min(430px, 92vw); background: #172d3d; border: 1px solid var(--line); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); }
+    .modalbox input { width: 100%; margin: 8px 0 12px; background: #08141d; color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 11px; }
+    .toast { display: none; position: fixed; right: 16px; bottom: 16px; background: #254362; border: 1px solid #7eabc9; border-radius: 8px; padding: 11px 12px; z-index: 9; }
+    .toast.show { display: block; }
+    .warning { color: var(--gold); }
+    @media (max-width: 760px){ .layout { grid-template-columns: 1fr; } .sidebar { position: static; } .nav { grid-template-columns: repeat(4, 1fr); } .nav button { text-align: center; font-size: 11px; padding: 8px 2px; } .twocol { grid-template-columns: 1fr; } .topbar { align-items: flex-start; flex-direction: column; } }
+  </style>
 </head>
-<body><div class="app"><header class="top"><div class="title">☠ LAST DAWN<small>Zombie Siege · Original browser survival game</small></div><div class="wallet"><span>🪙 <b id="coins">0</b></span><span>🔧 <b id="scrap">0</b></span><span>🏆 Day <b id="day">1</b></span><button id="reset">Reset</button></div></header><div class="layout"><aside class="side"><div class="profile"><div class="avatar">🧟</div><b id="player">Survivor</b><div class="muted">Level <b id="level">1</b></div><div class="bar"><i id="xpbar" style="width:10%"></i></div><small class="muted"><span id="xp">0</span> / <span id="next">100</span> XP</small></div><nav class="nav"><button class="active" data-page="home">🏚️ Camp</button><button data-page="game">🎮 Defend</button><button data-page="loadout">🔫 Loadout</button><button data-page="shop">🛒 Workshop</button><button data-page="missions">📜 Missions</button></nav></aside><main><section id="home" class="section active"><div class="hero"><span class="tag">Daylight is running out</span><h1>Hold the line.</h1><p>Build your barricade, survive zombie waves and loot the ruins. Every night gets harder. This is a complete original HTML game with no framework.</p><div class="actions"><button class="primary" data-go="game">Start defense</button><button data-action="daily">🎁 Daily supply</button><button data-action="login">Change survivor name</button></div></div><div class="stats"><div class="stat">❤️ Health<b id="health">100</b></div><div class="stat">🧱 Barricade<b id="wall">100</b></div><div class="stat">⚔️ Damage<b id="damage">12</b></div><div class="stat">☠️ Kills<b id="kills">0</b></div></div><div class="twocol"><div class="card"><h2>Radio log</h2><div class="log" id="log"></div></div><div class="card"><h2>Current gear</h2><div id="gear"></div></div></div></section><section id="game" class="section"><div class="card"><h2>Night defense</h2><div class="gamebox"><div class="hud"><span>Wave <b id="wave">1</b></span><span>Enemies <b id="enemies">0</b></span><span>Ammo <b id="ammo">12</b></span><span>Base <b id="base">100</b></span></div><canvas id="canvas" width="900" height="430"></canvas><div class="controls"><button class="primary" data-action="shoot">🔫 Shoot</button><button data-action="repair">🔧 Repair</button><button data-action="medkit">❤️ Medkit</button><button class="danger" data-action="retreat">Retreat</button></div></div><p class="muted">Click <b>Shoot</b> or press Space. Zombies move toward your barricade. Headshots deal bonus damage.</p></div></section><section id="loadout" class="section"><div class="card"><h2>Loadout</h2><div class="grid" id="weapons"></div></div></section><section id="shop" class="section"><div class="card"><h2>Workshop</h2><div class="grid" id="shoplist"></div></div></section><section id="missions" class="section"><div class="card"><h2>Survivor missions</h2><div class="grid" id="missionslist"></div></div></section></main></div></div><div class="modal" id="modal"><div class="modalbox" id="modalbox"></div></div><div class="toast" id="toast"></div>
-<script>
-'use strict';
-const KEY='last-dawn-save';const weapons=[{id:'pistol',name:'Rusty Pistol',damage:12,ammo:12,cost:0,desc:'Reliable but weak.'},{id:'shotgun',name:'Scrap Shotgun',damage:34,ammo:6,cost:180,desc:'Huge close-range damage.'},{id:'rifle',name:'Ranger Rifle',damage:25,ammo:20,cost:350,desc:'Fast and accurate.'},{id:'crossbow',name:'Silent Crossbow',damage:48,ammo:4,cost:700,desc:'High damage, slow reload.'}];
-const fresh={name:'Survivor',level:1,xp:0,coins:250,scrap:30,day:1,health:100,wall:100,kills:0,wave:1,ammo:12,weapon:'pistol',owned:['pistol'],medkits:2,logs:[],daily:''};let s;try{s=JSON.parse(localStorage.getItem(KEY))||structuredClone(fresh)}catch(e){s=structuredClone(fresh)}s={...structuredClone(fresh),...s};let running=false,raf=0,zombies=[],last=0,spawnTimer=0;const $=id=>document.getElementById(id);const weapon=()=>weapons.find(w=>w.id===s.weapon)||weapons[0];function save(){localStorage.setItem(KEY,JSON.stringify(s));render()}function log(x){s.logs.unshift(new Date().toLocaleTimeString()+' '+x);s.logs=s.logs.slice(0,14)}function toast(x){$('toast').textContent=x;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2300)}function page(id){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===id));if(id==='game')startGame()}function addXP(n){s.xp+=n;while(s.xp>=s.level*100){s.xp-=s.level*100;s.level++;s.health=100;s.wall=Math.min(100,s.wall+20);log('🎉 Reached survivor level '+s.level)}}
-function render(){let w=weapon();$('coins').textContent=s.coins.toLocaleString();$('scrap').textContent=s.scrap.toLocaleString();$('day').textContent=s.day;$('player').textContent=s.name;$('level').textContent=s.level;$('xp').textContent=s.xp;$('next').textContent=s.level*100;$('xpbar').style.width=s.xp/(s.level*100)*100+'%';$('health').textContent=Math.max(0,s.health);$('wall').textContent=Math.max(0,s.wall);$('damage').textContent=w.damage;$('kills').textContent=s.kills;$('ammo').textContent=s.ammo;$('base').textContent=s.wall;$('wave').textContent=s.wave;$('enemies').textContent=zombies.length;$('log').innerHTML=s.logs.map(x=>'<div>'+x+'</div>').join('');$('gear').innerHTML='<div class="item"><h3>'+w.name+'</h3><p>'+w.desc+'</p><p>Damage: '+w.damage+' · Ammo: '+w.ammo+'</p><p>Medkits: '+s.medkits+'</p></div>';renderWeapons();renderShop();renderMissions()}
-function renderWeapons(){$('weapons').innerHTML=weapons.map(w=>'<div class="item"><span class="tag">'+(s.owned.includes(w.id)?'OWNED':'LOCKED')+'</span><h3>🔫 '+w.name+'</h3><p>'+w.desc+'</p><p>Damage '+w.damage+' · Magazine '+w.ammo+'</p><button data-weapon="'+w.id+'" '+(!s.owned.includes(w.id)?'disabled':'')+'>'+(s.weapon===w.id?'Equipped':'Equip')+'</button></div>').join('')}
-function renderShop(){$('shoplist').innerHTML=weapons.filter(w=>!s.owned.includes(w.id)).map(w=>'<div class="item"><h3>🛠 '+w.name+'</h3><p>'+w.desc+'</p><p class="shop-price">🪙 '+w.cost+'</p><button data-buy="'+w.id+'">Buy</button></div>').concat(['Repair kit','Medical kit','Ammo crate'].map((n,i)=>'<div class="item"><h3>🔧 '+n+'</h3><p>'+(i===0?'Restore 30 barricade.':i===1?'Restore 35 health.':'Refill your current magazine.')+'</p><p class="shop-price">🪙 '+[80,100,45][i]+'</p><button data-supply="'+i+'">Buy</button></div>')).join('')}
-function renderMissions(){$('missionslist').innerHTML=[['Survive a wave','Finish one wave',s.wave>1,'🪙 100'],['Zombie hunter','Kill 10 zombies',s.kills>=10,'🔧 40'],['Prepared','Own 3 weapons',s.owned.length>=3,'🏆 1 level'],['Last stand','Reach day 5',s.day>=5,'🔮 1 rare badge']].map(x=>'<div class="item"><h3>'+x[0]+'</h3><p>'+x[1]+'</p><p>'+x[3]+'</p><button '+(x[2]?'':'disabled')+' data-mission="'+x[0]+'">'+(x[2]?'Claim':'Incomplete')+'</button></div>').join('')}
-function buy(id){let w=weapons.find(x=>x.id===id);if(!w||s.coins<w.cost)return toast('Not enough coins');s.coins-=w.cost;s.owned.push(id);log('Bought '+w.name);save()}function supply(i){let costs=[80,100,45];if(s.coins<costs[i])return toast('Not enough coins');s.coins-=costs[i];if(i===0)s.wall=Math.min(100,s.wall+30);if(i===1)s.medkits++;if(i===2)s.ammo=weapon().ammo;toast('Supply purchased');save()}function daily(){let today=new Date().toISOString().slice(0,10);if(s.daily===today)return toast('Already claimed today');s.daily=today;s.coins+=200;s.scrap+=10;log('🎁 Daily supplies received');toast('+200 coins and +10 scrap');save()}function login(){open('<h2>Survivor name</h2><input id="nameInput" value="'+s.name+'"><button class="primary" data-name>Save</button> <button data-close>Cancel</button>')}function open(x){$('modalbox').innerHTML=x;$('modal').classList.add('open')}function close(){$('modal').classList.remove('open')}
-function startGame(){if(running)return;running=true;last=performance.now();spawnTimer=0;requestAnimationFrame(loop)}function stopGame(){running=false;cancelAnimationFrame(raf)}function newWave(){s.wave++;s.day++;s.wall=Math.min(100,s.wall+15);s.ammo=weapon().ammo;log('🌙 Night '+s.day+' begins. Wave '+s.wave+' incoming.');save()}function spawn(){let c=1+Math.floor(s.wave/2);for(let i=0;i<c;i++)zombies.push({x:880+Math.random()*80,y:275+Math.random()*90,hp:25+s.wave*7,speed:18+s.wave*1.5,hit:0})}
-function shoot(){if(!running)return startGame();if(s.ammo<=0)return toast('Out of ammo - buy an ammo crate');s.ammo--;if(!zombies.length){toast('No zombie in range');render();return}let z=zombies[Math.floor(Math.random()*zombies.length)];let dmg=weapon().damage;if(Math.random()<.18)dmg*=2;z.hp-=dmg;if(z.hp<=0){zombies=zombies.filter(x=>x!==z);s.kills++;s.coins+=12;s.scrap+=2;addXP(18);log('☠️ Zombie eliminated.')}render()}
-function repair(){if(s.scrap<5)return toast('Need 5 scrap');s.scrap-=5;s.wall=Math.min(100,s.wall+18);toast('Barricade repaired');save()}function medkit(){if(!s.medkits||s.health>=100)return toast('No medkit or health is full');s.medkits--;s.health=Math.min(100,s.health+35);toast('Health restored');save()}function retreat(){stopGame();page('home');toast('You returned to camp');save()}
-function loop(now){if(!running)return;let dt=Math.min(.05,(now-last)/1000);last=now;spawnTimer+=dt;if(spawnTimer>Math.max(1.3,4-s.wave*.15)){spawn();spawnTimer=0}zombies.forEach(z=>{z.x-=z.speed*dt;if(z.x<145){z.x=145;z.hit+=dt;if(z.hit>.8){s.wall-=4;z.hit=0}}});if(s.wall<=0){s.wall=0;s.health-=dt*3;if(s.health<=0){s.health=0;stopGame();log('💀 The camp fell. Start a new defense.');toast('Camp defeated');save();return}}if(!zombies.length&&s.wave>1&&spawnTimer>1){newWave()}draw();render();raf=requestAnimationFrame(loop)}
-function draw(){let c=$('canvas'),x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);x.fillStyle='#101c22';x.fillRect(0,0,c.width,c.height);x.fillStyle='#182c2c';x.fillRect(0,320,c.width,110);x.fillStyle='#6d4b35';x.fillRect(80,210,70,150);x.fillStyle='#b37b4f';x.fillRect(70,195,90,25);x.fillStyle='#8ed0cf';x.fillRect(94,240,22,28);x.fillStyle='#6f9b50';for(let i=0;i<13;i++){x.fillRect(i*75,310+(i%3)*10,4,30)}x.fillStyle='#d7e8d8';x.font='bold 15px system-ui';x.fillText('SAFE CAMP',65,180);zombies.forEach(z=>{x.fillStyle='#7bcf83';x.beginPath();x.arc(z.x,z.y,19,0,Math.PI*2);x.fill();x.fillStyle='#15251c';x.fillRect(z.x-12,z.y-3,8,5);x.fillRect(z.x+5,z.y-3,8,5);x.fillStyle='#b94d56';x.fillRect(z.x-19,z.y+17,38,5);x.fillStyle='#ff8790';x.fillRect(z.x-19,z.y+17,38*(z.hp/(25+s.wave*7)),5)});x.fillStyle='#dbe8e4';x.font='14px system-ui';x.fillText('Shoot the incoming horde!',350,40)}
-document.addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;if(b.dataset.page)page(b.dataset.page);if(b.dataset.go)page(b.dataset.go);if(b.id==='reset'){if(confirm('Reset all progress?')){localStorage.removeItem(KEY);location.reload()}}if(b.dataset.action==='shoot')shoot();if(b.dataset.action==='repair')repair();if(b.dataset.action==='medkit')medkit();if(b.dataset.action==='retreat')retreat();if(b.dataset.action==='daily')daily();if(b.dataset.action==='login')login();if(b.dataset.action==='chest'){}if(b.dataset.weapon){s.weapon=b.dataset.weapon;s.ammo=weapon().ammo;toast('Weapon equipped');save()}if(b.dataset.buy)buy(b.dataset.buy);if(b.dataset.supply)supply(Number(b.dataset.supply));if(b.dataset.name){let n=$('nameInput').value.trim();if(n){s.name=n;close();save()}}if(b.dataset.close)close();if(b.dataset.mission){s.coins+=100;s.achievement=(s.achievement||0)+1;toast('Mission reward claimed');save()}});$('modal').onclick=e=>{if(e.target.id==='modal')close()};document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();shoot()}});log('📻 Welcome to Last Dawn. The first horde is coming.');render();
-</script></body></html>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">☠ LAST DAWN<small>Zombie Siege · original survivor defense</small></div>
+      <div class="wallet">
+        <span>🪙 <b id="coins">0</b></span>
+        <span>🔧 <b id="scrap">0</b></span>
+        <span>🌙 Day <b id="day">1</b></span>
+        <button id="resetBtn">Reset</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="profile">
+          <div class="avatar">🧟</div>
+          <strong id="playerName">Survivor</strong>
+          <div class="muted" style="margin-top: 6px;">Level <b id="level">1</b></div>
+          <div class="bar"><i id="xpBar" style="width: 12%;"></i></div>
+          <small class="muted"><span id="xp">0</span> / <span id="xpNext">100</span> XP</small>
+        </div>
+        <nav class="nav">
+          <button class="active" data-page="home">🏚️ Camp</button>
+          <button data-page="game">🎮 Defend</button>
+          <button data-page="loadout">🔫 Loadout</button>
+          <button data-page="shop">🛒 Shop</button>
+          <button data-page="missions">📜 Missions</button>
+        </nav>
+      </aside>
+
+      <main>
+        <section id="home" class="section active">
+          <div class="hero">
+            <span class="tag">Nightfall Watch</span>
+            <h1>Hold the line until the sunrise.</h1>
+            <p>Your camp is under siege. Build scrap, upgrade weapons, repair the barricade, and keep your survivors alive through every wave. The more nights you survive, the more the horde grows.</p>
+            <div class="actions">
+              <button class="primary" data-goto="game">Start Defense</button>
+              <button data-action="daily">🎁 Daily Supply</button>
+              <button data-action="gift">🎟️ Gift Code</button>
+              <button data-action="gm">🛠 GM</button>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat">❤️ Health <b id="health">100</b></div>
+            <div class="stat">🧱 Wall <b id="wall">100</b></div>
+            <div class="stat">⚔️ Damage <b id="damage">12</b></div>
+            <div class="stat">☠️ Kills <b id="kills">0</b></div>
+          </div>
+
+          <div class="twocol">
+            <div class="card">
+              <h2>Radio Log</h2>
+              <div id="log" class="log"></div>
+            </div>
+            <div class="card">
+              <h2>Current Gear</h2>
+              <div id="gearBox"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="game" class="section">
+          <div class="card">
+            <h2>Night Defense</h2>
+            <div class="gameview">
+              <div class="hud">
+                <span>Wave <b id="wave">1</b></span>
+                <span>Enemies <b id="enemyCount">0</b></span>
+                <span>Ammo <b id="ammo">12</b></span>
+                <span>Base Health <b id="baseHp">100</b></span>
+              </div>
+              <canvas id="canvas" width="900" height="430"></canvas>
+              <div class="controls">
+                <button class="primary" data-action="shoot">🔫 Shoot</button>
+                <button data-action="repair">🔧 Repair</button>
+                <button data-action="medkit">❤️ Medkit</button>
+                <button class="danger" data-action="retreat">Retreat</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="loadout" class="section">
+          <div class="card">
+            <h2>Loadout</h2>
+            <div id="weaponList" class="grid"></div>
+          </div>
+        </section>
+
+        <section id="shop" class="section">
+          <div class="card">
+            <h2>Workshop</h2>
+            <div id="shopList" class="grid"></div>
+          </div>
+        </section>
+
+        <section id="missions" class="section">
+          <div class="card">
+            <h2>Survivor Missions</h2>
+            <div id="missionList" class="grid"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modalbox" id="modalBox"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    'use strict';
+
+    const STORAGE_KEY = 'last-dawn-save-v2';
+
+    const weaponData = [
+      { id: 'pistol', name: 'Rusty Pistol', damage: 12, mag: 12, cost: 0, desc: 'Reliable and simple.' },
+      { id: 'shotgun', name: 'Scrap Shotgun', damage: 32, mag: 6, cost: 180, desc: 'Heavy damage at close range.' },
+      { id: 'rifle', name: 'Ranger Rifle', damage: 24, mag: 18, cost: 340, desc: 'Balanced and accurate.' },
+      { id: 'crossbow', name: 'Silent Crossbow', damage: 48, mag: 4, cost: 680, desc: 'Big damage, slow reload.' }
+    ];
+
+    const defaultState = {
+      name: 'Survivor',
+      level: 1,
+      xp: 0,
+      coins: 250,
+      scrap: 30,
+      day: 1,
+      health: 100,
+      wall: 100,
+      kills: 0,
+      wave: 1,
+      ammo: 12,
+      weapon: 'pistol',
+      owned: ['pistol'],
+      medkits: 2,
+      logs: ['📻 Radio online. The first horde is coming.'],
+      daily: '',
+      gm: false,
+      achievements: { survive: false, kills10: false, weapons3: false, day5: false }
+    };
+
+    let state = loadState();
+    let gameRunning = false;
+    let animationId = 0;
+    let lastFrame = 0;
+    let spawnTimer = 0;
+    let zombies = [];
+
+    function cloneDefault() {
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+
+    function loadState() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (!raw) return cloneDefault();
+        return { ...cloneDefault(), ...raw, owned: Array.isArray(raw.owned) ? raw.owned : cloneDefault().owned, logs: Array.isArray(raw.logs) ? raw.logs : cloneDefault().logs };
+      } catch {
+        return cloneDefault();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
+
+    function getWeapon(id) {
+      return weaponData.find(w => w.id === id) || weaponData[0];
+    }
+
+    function currentWeapon() {
+      return getWeapon(state.weapon);
+    }
+
+    function addLog(msg) {
+      state.logs.unshift(new Date().toLocaleTimeString() + ' ' + msg);
+      state.logs = state.logs.slice(0, 14);
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toast.timeout);
+      toast.timeout = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    function openModal(html) {
+      document.getElementById('modalBox').innerHTML = html;
+      document.getElementById('modal').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
+
+    function addXP(amount) {
+      state.xp += amount;
+      while (state.xp >= state.level * 100) {
+        state.xp -= state.level * 100;
+        state.level += 1;
+        state.health = 100;
+        state.wall = Math.min(100, state.wall + 20);
+        addLog('🎉 Survivor level up! Now level ' + state.level + '.');
+      }
+    }
+
+    function canUseGM() {
+      return state.gm;
+    }
+
+    function renderHUD() {
+      const w = currentWeapon();
+      document.getElementById('coins').textContent = state.coins.toLocaleString();
+      document.getElementById('scrap').textContent = state.scrap.toLocaleString();
+      document.getElementById('day').textContent = state.day;
+      document.getElementById('playerName').textContent = state.name;
+      document.getElementById('level').textContent = state.level;
+      document.getElementById('xp').textContent = state.xp;
+      document.getElementById('xpNext').textContent = state.level * 100;
+      document.getElementById('xpBar').style.width = (state.xp / (state.level * 100) * 100) + '%';
+      document.getElementById('health').textContent = Math.max(0, state.health);
+      document.getElementById('wall').textContent = Math.max(0, state.wall);
+      document.getElementById('damage').textContent = w.damage;
+      document.getElementById('kills').textContent = state.kills;
+      document.getElementById('ammo').textContent = state.ammo;
+      document.getElementById('wave').textContent = state.wave;
+      document.getElementById('enemyCount').textContent = zombies.length;
+      document.getElementById('baseHp').textContent = Math.max(0, state.wall);
+    }
+
+    function renderGear() {
+      const w = currentWeapon();
+      document.getElementById('gearBox').innerHTML = `
+        <div class="item">
+          <h3>🔫 ${w.name}</h3>
+          <p>${w.desc}</p>
+          <p>Damage: ${w.damage} · Magazine: ${w.mag}</p>
+          <p>Medkits: ${state.medkits}</p>
+        </div>
+      `;
+    }
+
+    function renderLog() {
+      const el = document.getElementById('log');
+      el.innerHTML = state.logs.map(line => '<div>' + line + '</div>').join('');
+    }
+
+    function renderWeapons() {
+      const list = document.getElementById('weaponList');
+      list.innerHTML = weaponData.map(w => {
+        const owned = state.owned.includes(w.id);
+        const active = state.weapon === w.id;
+        return `
+          <div class="item">
+            <span class="tag">${owned ? (active ? 'Equipped' : 'Owned') : 'Locked'}</span>
+            <h3>🔫 ${w.name}</h3>
+            <p>${w.desc}</p>
+            <p>Damage ${w.damage} · mag ${w.mag}</p>
+            <button ${!owned ? 'disabled' : ''} data-weapon="${w.id}">${active ? 'Equipped' : 'Equip'}</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderShop() {
+      const list = document.getElementById('shopList');
+      const weaponsForSale = weaponData.filter(w => !state.owned.includes(w.id));
+      const offers = [
+        ...weaponsForSale.map(w => `
+          <div class="item">
+            <h3>🛠 ${w.name}</h3>
+            <p>${w.desc}</p>
+            <p class="warning">🪙 ${w.cost}</p>
+            <button data-buy-weapon="${w.id}">Buy</button>
+          </div>
+        `),
+        `
+          <div class="item">
+            <h3>🔧 Repair Kit</h3>
+            <p>Restore 25 wall health.</p>
+            <p class="warning">🪙 80</p>
+            <button data-buy-supply="repair">Buy</button>
+          </div>
+        `,
+        `
+          <div class="item">
+            <h3>❤️ Medkit</h3>
+            <p>Add 1 medkit to your inventory.</p>
+            <p class="warning">🪙 90</p>
+            <button data-buy-supply="medkit">Buy</button>
+          </div>
+        `,
+        `
+          <div class="item">
+            <h3>💥 Ammo Crate</h3>
+            <p>Fully reload your weapon.</p>
+            <p class="warning">🪙 45</p>
+            <button data-buy-supply="ammo">Buy</button>
+          </div>
+        `
+      ];
+      list.innerHTML = offers.join('');
+    }
+
+    function renderMissions() {
+      const list = document.getElementById('missionList');
+      const missions = [
+        { title: 'First Blood', desc: 'Get 1 kill', done: state.kills >= 1, reward: '100 coins' },
+        { title: 'Crowd Control', desc: 'Get 10 kills', done: state.kills >= 10, reward: '200 coins' },
+        { title: 'Armed Up', desc: 'Own 3 weapons', done: state.owned.length >= 3, reward: '150 scrap' },
+        { title: 'Last Stand', desc: 'Reach day 5', done: state.day >= 5, reward: '1 rare badge' }
+      ];
+      list.innerHTML = missions.map(m => 
+        `<div class="item"><h3>${m.title}</h3><p>${m.desc}</p><p class="warning">Reward: ${m.reward}</p><button ${m.done ? '' : 'disabled'} data-claim-mission="${m.title}">${m.done ? 'Claim' : 'Incomplete'}</button></div>`
+      ).join('');
+    }
+
+    function renderAll() {
+      renderHUD();
+      renderLog();
+      renderGear();
+      renderWeapons();
+      renderShop();
+      renderMissions();
+    }
+
+    function equipWeapon(id) {
+      if (!state.owned.includes(id)) return;
+      state.weapon = id;
+      state.ammo = getWeapon(id).mag;
+      addLog('Equipped ' + getWeapon(id).name + '.');
+      saveState();
+      toast('Weapon equipped');
+    }
+
+    function buyWeapon(id) {
+      const w = getWeapon(id);
+      if (state.coins < w.cost) {
+        toast('Not enough coins');
+        return;
+      }
+      state.coins -= w.cost;
+      if (!state.owned.includes(id)) state.owned.push(id);
+      state.weapon = id;
+      state.ammo = w.mag;
+      addLog('Bought ' + w.name + '.');
+      saveState();
+      toast(w.name + ' bought');
+    }
+
+    function buySupply(kind) {
+      const costs = { repair: 80, medkit: 90, ammo: 45 };
+      const cost = costs[kind];
+      if (state.coins < cost) {
+        toast('Not enough coins');
+        return;
+      }
+      state.coins -= cost;
+      if (kind === 'repair') {
+        state.wall = Math.min(100, state.wall + 25);
+        addLog('Barricade repaired.');
+      }
+      if (kind === 'medkit') {
+        state.medkits += 1;
+        addLog('Medkit added to inventory.');
+      }
+      if (kind === 'ammo') {
+        state.ammo = currentWeapon().mag;
+        addLog('Ammo crate loaded.');
+      }
+      saveState();
+      toast('Supply purchased');
+    }
+
+    function dailySupply() {
+      const today = new Date().toISOString().slice(0, 10);
+      if (state.daily === today) {
+        toast('Already claimed today');
+        return;
+      }
+      state.daily = today;
+      state.coins += 200;
+      state.scrap += 10;
+      state.medkits += 1;
+      addLog('Daily supply collected: +200 coins, +10 scrap, +1 medkit.');
+      saveState();
+      toast('Daily reward claimed');
+    }
+
+    function openGiftModal() {
+      openModal(`
+        <h2>Gift Code</h2>
+        <p class="muted">Enter the special code to unlock premium rewards.</p>
+        <input id="giftInput" placeholder="Enter code" />
+        <div class="actions">
+          <button class="primary" data-redeem-gift>Redeem</button>
+          <button data-close-modal>Close</button>
+        </div>
+      `);
+    }
+
+    function redeemGift() {
+      const code = document.getElementById('giftInput').value.trim();
+      if (code === '9676911025') {
+        state.gm = true;
+        state.coins += 99999;
+        state.scrap += 5000;
+        state.level = 100;
+        state.health = 100;
+        state.wall = 100;
+        state.ammo = currentWeapon().mag * 2;
+        state.owned = Array.from(new Set([...state.owned, ...weaponData.map(w => w.id)]));
+        addLog('🎁 Gift code redeemed: GM access unlocked and rewards granted.');
+        closeModal();
+        saveState();
+        toast('GM access unlocked');
+        setTimeout(openGMPanel, 100);
+      } else {
+        toast('Invalid code');
+      }
+    }
+
+    function openGMPanel() {
+      if (!canUseGM()) return;
+      openModal(`
+        <h2>🛠 GM Console</h2>
+        <div class="actions" style="flex-direction:column;align-items:stretch;">
+          <button data-gm="coins">+100000 coins</button>
+          <button data-gm="scrap">+5000 scrap</button>
+          <button data-gm="health">Restore health + wall</button>
+          <button data-gm="level">Set level to 100</button>
+          <button data-close-modal>Close</button>
+        </div>
+      `);
+    }
+
+    function runGM(kind) {
+      if (!canUseGM()) return;
+      if (kind === 'coins') state.coins += 100000;
+      if (kind === 'scrap') state.scrap += 5000;
+      if (kind === 'health') { state.health = 100; state.wall = 100; }
+      if (kind === 'level') state.level = 100;
+      addLog('GM command executed: ' + kind + '.');
+      closeModal();
+      saveState();
+      toast('GM command run');
+    }
+
+    function claimMission(title) {
+      if (title === 'First Blood' && state.kills >= 1) {
+        state.coins += 100;
+      } else if (title === 'Crowd Control' && state.kills >= 10) {
+        state.coins += 200;
+      } else if (title === 'Armed Up' && state.owned.length >= 3) {
+        state.scrap += 150;
+      } else if (title === 'Last Stand' && state.day >= 5) {
+        state.coins += 500;
+      } else {
+        toast('Mission not complete');
+        return;
+      }
+      addLog('Mission cleared: ' + title + '.');
+      saveState();
+      toast('Mission claimed');
+    }
+
+    function spawnWave() {
+      const count = Math.min(12 + state.wave * 2, 30);
+      for (let i = 0; i < count; i++) {
+        zombies.push({
+          x: 860 + Math.random() * 50,
+          y: 160 + Math.random() * 200,
+          hp: 24 + state.wave * 8,
+          maxHp: 24 + state.wave * 8,
+          speed: 26 + state.wave * 2.2,
+          hitCooldown: 0
+        });
+      }
+      addLog('💀 Wave ' + state.wave + ' begins.');
+      renderAll();
+    }
+
+    function startGame() {
+      if (gameRunning) return;
+      gameRunning = true;
+      lastFrame = performance.now();
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function stopGame() {
+      gameRunning = false;
+      cancelAnimationFrame(animationId);
+      renderAll();
+    }
+
+    function nextWave() {
+      state.wave += 1;
+      state.day = Math.max(state.day, state.wave);
+      addLog('🌙 New night begins. Wave ' + state.wave + ' incoming.');
+      spawnWave();
+      saveState();
+    }
+
+    function repairWall() {
+      if (state.scrap < 5) {
+        toast('Need 5 scrap to repair');
+        return;
+      }
+      state.scrap -= 5;
+      state.wall = Math.min(100, state.wall + 18);
+      addLog('Barricade repaired.');
+      saveState();
+      toast('Wall repaired');
+    }
+
+    function useMedkit() {
+      if (state.medkits <= 0) {
+        toast('No medkits');
+        return;
+      }
+      if (state.health >= 100) {
+        toast('Health already full');
+        return;
+      }
+      state.medkits -= 1;
+      state.health = Math.min(100, state.health + 35);
+      addLog('Used medkit.');
+      saveState();
+      toast('Health restored');
+    }
+
+    function shoot() {
+      if (!gameRunning) {
+        startGame();
+      }
+      const w = currentWeapon();
+      if (state.ammo <= 0) {
+        toast('Out of ammo');
+        return;
+      }
+      state.ammo -= 1;
+      if (!zombies.length) {
+        toast('No target in range');
+        renderAll();
+        return;
+      }
+      const target = zombies[Math.floor(Math.random() * zombies.length)];
+      const crit = Math.random() < 0.18;
+      const dmg = w.damage * (crit ? 2.1 : 1);
+      target.hp -= dmg;
+      if (crit) addLog('Critical hit!');
+      if (target.hp <= 0) {
+        zombies = zombies.filter(z => z !== target);
+        state.kills += 1;
+        state.coins += 12;
+        state.scrap += 2;
+        addXP(18);
+        addLog('☠️ Zombie eliminated.');
+      }
+      saveState();
+    }
+
+    function retreat() {
+      stopGame();
+      page('home');
+      toast('Returned to camp');
+      saveState();
+    }
+
+    function drawGame() {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0c1d22';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#183238';
+      ctx.fillRect(0, 300, canvas.width, 130);
+
+      ctx.fillStyle = '#7d5d43';
+      ctx.fillRect(70, 200, 90, 120);
+      ctx.fillStyle = '#e2d0a2';
+      ctx.fillRect(65, 190, 100, 18);
+      ctx.fillStyle = '#8bcdd8';
+      ctx.fillRect(110, 230, 12, 30);
+
+      ctx.fillStyle = '#dfe8eb';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillText('CAMP', 70, 175);
+
+      zombies.forEach(z => {
+        ctx.fillStyle = '#7fd48c';
+        ctx.beginPath();
+        ctx.arc(z.x, z.y, 18, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#0f2d25';
+        ctx.fillRect(z.x - 16, z.y + 20, 32, 5);
+        ctx.fillStyle = '#ff8a94';
+        ctx.fillRect(z.x - 16, z.y + 20, 32 * (z.hp / z.maxHp), 5);
+      });
+
+      const wallX = 160;
+      ctx.strokeStyle = '#8ec5d0';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(wallX - 30, 170, 28, 130);
+      ctx.fillStyle = '#5ed7e3';
+      ctx.fillRect(wallX - 20, 190, 8, 100);
+    }
+
+    function gameLoop(ts) {
+      if (!gameRunning) return;
+      const dt = Math.min(0.05, (ts - lastFrame) / 1000 || 0.016);
+      lastFrame = ts;
+      spawnTimer += dt;
+
+      if (spawnTimer > Math.max(1.0, 3.2 - state.wave * 0.15)) {
+        spawnTimer = 0;
+        zombies.push({
+          x: 850 + Math.random() * 30,
+          y: 170 + Math.random() * 150,
+          hp: 24 + state.wave * 7,
+          maxHp: 24 + state.wave * 7,
+          speed: 20 + state.wave * 2.1,
+          hitCooldown: 0
+        });
+      }
+
+      zombies.forEach(z => {
+        z.x -= z.speed * dt;
+        if (z.x < 160) {
+          z.x = 160;
+          state.wall -= 7 * dt;
+        }
+      });
+
+      if (state.wall <= 0) {
+        state.wall = 0;
+        state.health -= 6 * dt;
+      }
+
+      if (state.health <= 0) {
+        state.health = 0;
+        stopGame();
+        addLog('💀 The camp fell. You will need to rebuild and defend again.');
+        toast('Camp lost');
+        saveState();
+        return;
+      }
+
+      if (zombies.length === 0 && gameRunning) {
+        state.wave += 1;
+        state.day = Math.max(state.day, state.wave);
+        addLog('🌙 Advanced to wave ' + state.wave + '.');
+        spawnWave();
+      }
+
+      drawGame();
+      renderHUD();
+      renderLog();
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function page(id) {
+      document.querySelectorAll('.section').forEach(section => section.classList.toggle('active', section.id === id));
+      document.querySelectorAll('[data-page]').forEach(button => button.classList.toggle('active', button.dataset.page === id));
+      if (id === 'game') startGame();
+    }
+
+    function resetGame() {
+      localStorage.removeItem(STORAGE_KEY);
+      state = cloneDefault();
+      zombies = [];
+      stopGame();
+      renderAll();
+      log('💾 Save reset. New run started.');
+      renderAll();
+    }
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+
+      if (button.dataset.page) page(button.dataset.page);
+      if (button.dataset.goto) page(button.dataset.goto);
+      if (button.dataset.action === 'daily') dailySupply();
+      if (button.dataset.action === 'gift') openGiftModal();
+      if (button.dataset.action === 'gm') openGMPanel();
+      if (button.dataset.action === 'shoot') shoot();
+      if (button.dataset.action === 'repair') repairWall();
+      if (button.dataset.action === 'medkit') useMedkit();
+      if (button.dataset.action === 'retreat') retreat();
+      if (button.dataset.weapon) equipWeapon(button.dataset.weapon);
+      if (button.dataset.buyWeapon) buyWeapon(button.dataset.buyWeapon);
+      if (button.dataset.buySupply) buySupply(button.dataset.buySupply);
+      if (button.dataset.claimMission) claimMission(button.dataset.claimMission);
+      if (button.dataset.redeemGift) redeemGift();
+      if (button.dataset.gm) runGM(button.dataset.gm);
+      if (button.dataset.closeModal) closeModal();
+      if (button.id === 'resetBtn') {
+        if (confirm('Reset all progress?')) {
+          resetGame();
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.code === 'Space') {
+        event.preventDefault();
+        shoot();
+      }
+    });
+
+    document.getElementById('modal').addEventListener('click', (event) => {
+      if (event.target.id === 'modal') closeModal();
+    });
+
+    function init() {
+      renderAll();
+      drawGame();
+      page('home');
+    }
+
+    init();
+  </script>
+</body>
+</html>
